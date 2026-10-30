@@ -25,7 +25,7 @@ Work in progress. Built Oct 30 to 31, 2026 for the DEV Hacktoberfest "Ghost in t
 | Open model repairs each helper two ways (rewrite code, or change only the prompt words), kept only if the accept rule passes | Done, see `results/exorcism_*.json` and `agents/fixed_*.py` |
 | Hand-written reference fix (`agents/human_fix.py`) | Done |
 | Scores on the practice set | `results/SUMMARY_section2.md` |
-| Unseen exam drawn from the pool and run on every arm | Next |
+| Unseen exam drawn from the pool and run on every arm | Done, see `results/SUMMARY_exam.md` |
 
 ## Run it
 
