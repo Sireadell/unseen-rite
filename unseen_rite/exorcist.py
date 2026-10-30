@@ -135,9 +135,9 @@ def exorcise(agent_key, mode, rites=3, repeats=2):
     for rite in range(1, rites + 1):
         started = time.time()
         prompt = build_prompt(current_src, mode, failing_transcripts(current_rows), history)
-        reply = llm.ask(prompt, temperature=0.4, max_tokens=8192, thinking=None)
+        reply = llm.ask(prompt, temperature=0.4, max_tokens=8192, thinking="minimal")
         code = extract_code(reply)
-        entry = {"rite": rite, "mode": mode, "agent": agent_key, "model": llm.GEMMA, "seconds_to_write": round(time.time() - started)}
+        entry = {"rite": rite, "reply_chars": len(reply), "mode": mode, "agent": agent_key, "model": llm.GEMMA, "seconds_to_write": round(time.time() - started)}
         if not code:
             entry.update(accepted=False, reason="no code block in the reply")
         else:
