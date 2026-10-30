@@ -1,0 +1,21 @@
+name: seal
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the locked question pool has not changed
+        run: |
+          actual=$(sha256sum data/pool.json | awk '{print $1}')
+          expected=$(cat data/pool.sha256)
+          echo "locked pool fingerprint: $expected"
+          echo "pool file fingerprint:   $actual"
+          echo "commit: $GITHUB_SHA at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          test "$actual" = "$expected"
+      - name: Run the tests
+        run: |
+          pip install pytest
+          python -m pytest -q tests

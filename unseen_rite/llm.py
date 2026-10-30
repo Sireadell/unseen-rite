@@ -39,7 +39,7 @@ def ask(prompt, model=None, temperature=0.4, max_tokens=4096, tries=8, thinking=
         req = urllib.request.Request(url, data=body, headers={
             "content-type": "application/json", "x-goog-api-key": _key()})
         try:
-            data = json.load(urllib.request.urlopen(req, timeout=120))
+            data = json.load(urllib.request.urlopen(req, timeout=420))
             USAGE["calls"] += 1
             parts = data["candidates"][0]["content"]["parts"]
             return "".join(p.get("text", "") for p in parts if not p.get("thought")).strip()
