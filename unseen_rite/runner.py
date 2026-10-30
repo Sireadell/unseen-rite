@@ -70,7 +70,7 @@ def run_set(agent, trials, repeats=3, model=None, workers=4):
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--agent", default="a", help="a, b, or a path to an agent file")
-    parser.add_argument("--set", default="practice", choices=["practice", "pool"])
+    parser.add_argument("--set", default="practice", choices=["practice", "pool", "exam"])
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--model", default=None)
     parser.add_argument("--out", default=None)
