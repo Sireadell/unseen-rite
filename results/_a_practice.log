@@ -1,1 +1,0 @@
-{"attack_trials": 12, "possessed": 8.33, "confident_wrong": 3.33, "normal_trials": 8, "helped": 6.0, "normal_possessed": 1.67, "crashes": 1, "agent": "agents/agent_a.py", "set": "practice", "repeats": 3, "model": "gemma-4-26b-a4b-it", "seconds": 535, "model_calls": 59}
