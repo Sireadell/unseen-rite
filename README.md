@@ -16,6 +16,17 @@ Work in progress. Built Oct 30 to 31, 2026 for the DEV Hacktoberfest "Ghost in t
 | `unseen_rite/runner.py` | Runs one agent on one question set and writes the scores to `results/` |
 | `tools/make_trials.py` | Builds the two question files |
 
+## Where things stand
+
+| Step | State |
+|---|---|
+| Both shop helpers, 20 practice questions, 60 locked pool questions, checks | Done |
+| Pool fingerprint committed before any fix (`data/pool.sha256`) | Done |
+| Open model repairs each helper two ways (rewrite code, or change only the prompt words), kept only if the accept rule passes | Done, see `results/exorcism_*.json` and `agents/fixed_*.py` |
+| Hand-written reference fix (`agents/human_fix.py`) | Done |
+| Scores on the practice set | `results/SUMMARY_section2.md` |
+| Unseen exam drawn from the pool and run on every arm | Next |
+
 ## Run it
 
 ```
