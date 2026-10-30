@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: unseen-rite
+    runtime: python
+    plan: free
+    buildCommand: echo no build
+    startCommand: python web/app.py
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
