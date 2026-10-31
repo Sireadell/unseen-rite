@@ -1,0 +1,15 @@
+<pasted_content id="f3b1">
+The handover is written. A new session can continue from it.
+
+**Main file:** `C:\Users\DELL\hackathons\dev-hacktoberfest-ghost-in-the-machine\HANDOVER.md`
+
+| What | Where |
+|---|---|
+| Handover (start here) | `...\dev-hacktoberfest-ghost-in-the-machine\HANDOVER.md` |
+| Official rules, saved | `...\RULES_SNAPSHOT.md` in the same folder |
+| Short resume note | `C:\Users\DELL\resume\scratch-2026-10-27-d96026.md` |
+
+The Opus planner has already created its files in that folder (lane check, gate, Ceiling Plan, build plan, decision, post outline). It's still running, so they may be partly filled. The handover tells the next session to check them first.
+
+Nothing is built or posted yet. The one open call is your yes on the idea.
+</pasted_content id="f3b1">
