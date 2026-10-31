@@ -122,17 +122,74 @@ td.f{color:var(--bad)}td.h{color:var(--good)}
  .ledger{grid-template-columns:1fr}
  .fcols{grid-template-columns:1fr 1fr}.fcols>div:first-child{grid-column:1/-1}
 }
+
+/* theme layer (ghost in the machine) */
+.hero{position:relative;overflow:hidden}
+.hero .in{position:relative;z-index:1}
+.bigghost{position:absolute;right:clamp(-40px,4vw,70px);top:50%;transform:translateY(-52%);width:clamp(220px,34vw,460px);color:#8fc1ff;opacity:.16;pointer-events:none;animation:float 7s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-58%)}}
+.hero h1{position:relative}
+.sitenav .links a.cta{display:inline-flex;align-items:center;gap:8px}
+.gl{width:17px;height:17px;transition:transform .25s}
+.sitenav .links a.cta:hover .gl{transform:translateY(-3px) rotate(-8deg)}
+.msg.bot{position:relative}
+.msg.bot.st{padding-top:36px}
+.stamp{position:absolute;right:10px;top:8px;transform:rotate(4deg);font:700 11px/1 "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;padding:5px 7px;border:2px solid;border-radius:4px;background:#fff}
+.stamp.p{color:var(--bbad)}.stamp.e{color:var(--bgood)}
+@media(prefers-reduced-motion:reduce){.bigghost{animation:none}}
+@media(max-width:760px){.bigghost{opacity:.12;width:60vw;top:auto;bottom:-20px;transform:none}}
+
+/* ===== theme v2: darker, blood red, scary moments that mean something ===== */
+:root{--bg:#090c0d;--deep:#050708;--acc:#e4483b;--ghost:#e4483b}
+.hero{background-color:#080a0b;background-image:radial-gradient(60% 70% at 78% 45%,#e4483b1c,transparent 70%),linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:auto,56px 56px,56px 56px}
+.hero::before{content:"";position:absolute;inset:-10%;z-index:0;pointer-events:none;opacity:.34;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.008 .014' numOctaves='4' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .62  0 0 0 0 .66  0 0 0 .9 -.28'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");background-size:900px 600px;animation:fog 60s linear infinite}
+@keyframes fog{to{background-position:900px 300px}}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 35%,#000000cc 100%);animation:lights 9s infinite}
+@keyframes lights{0%,86%,100%{opacity:1}87%{opacity:.35}88%{opacity:1}90%{opacity:.55}91%{opacity:1}}
+.bigghost{z-index:0;color:#e4483b;opacity:.3;filter:drop-shadow(0 0 22px #e4483b88)}
+.hero .mark{color:var(--acc)}
+.poss{position:relative;color:var(--ghost);display:inline-block;animation:glitch 5.5s infinite}
+.poss::before,.poss::after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;pointer-events:none;opacity:0}
+.poss::before{color:#6fe0ff;clip-path:inset(0 0 55% 0)}
+.poss::after{color:#ff2d55;clip-path:inset(55% 0 0 0)}
+@keyframes glitch{0%,90%,100%{text-shadow:0 0 18px #e4483b66}91%{transform:translate(-3px,0)}92%{transform:translate(3px,1px)}93%{transform:none}}
+.poss{animation:glitch 5.5s infinite}
+.poss::before{animation:gA 5.5s infinite}.poss::after{animation:gB 5.5s infinite}
+@keyframes gA{0%,90%,94%,100%{opacity:0}91%,93%{opacity:.9;transform:translate(-5px,0)}}
+@keyframes gB{0%,90%,94%,100%{opacity:0}91%,93%{opacity:.9;transform:translate(5px,0)}}
+.sitenav{background:#090c0dee}
+.sitenav .links a.cta{background:linear-gradient(180deg,#f0594b,#d23a2d);color:#fff;box-shadow:0 0 0 0 #e4483b66,0 0 20px #e4483b66;animation:beat 3s ease-in-out infinite}
+@keyframes beat{50%{box-shadow:0 0 0 6px #e4483b22,0 0 30px #e4483b99}}
+.sitenav .links a[data-s].on{box-shadow:0 2px 0 var(--acc)}
+.sitenav .links a.cta.on{box-shadow:0 0 0 3px #e4483b66}
+.n i{color:var(--acc)}
+/* the hidden voice */
+.msg .whisper{color:#ff9d92;font-style:italic;text-shadow:0 0 8px #e4483b,0 0 18px #e4483b88;animation:wh 3.2s ease-in-out infinite}
+@keyframes wh{50%{opacity:.6;text-shadow:0 0 3px #e4483b66}}
+.wnote{display:block;margin-top:6px;font:500 11px/1.3 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#ff9d92}
+/* possession when a trick works */
+.msg.bot.hit{background:#fff1ee;border-color:var(--bbad);animation:possess .9s steps(1) 1}
+@keyframes possess{0%{transform:translateX(0);text-shadow:none}10%{transform:translateX(-6px);text-shadow:3px 0 #ff2d55,-3px 0 #00d4ff}20%{transform:translateX(7px);text-shadow:-3px 0 #ff2d55,3px 0 #00d4ff;clip-path:inset(0 0 40% 0)}30%{transform:translateX(-4px);clip-path:none}45%{transform:translateX(5px);text-shadow:2px 0 #ff2d55,-2px 0 #00d4ff}60%{transform:none;text-shadow:none}}
+.msg.bot.hit .stamp{animation:slam .5s cubic-bezier(.2,1.6,.4,1) .35s both}
+@keyframes slam{from{transform:rotate(4deg) scale(2.6);opacity:0}to{transform:rotate(4deg) scale(1);opacity:1}}
+.win.haunted{box-shadow:0 0 0 2px #a3271c,0 0 32px #e4483b55}
+.win.haunted .wh{background:#2b0e0b}
+.msg.bot.ok{animation:calm 1.4s ease-out 1}
+@keyframes calm{0%{box-shadow:0 0 0 0 #0b6a4766}60%{box-shadow:0 0 0 12px #0b6a4700}}
+.win.calm .wh{background:#0c1f18}
+@media(prefers-reduced-motion:reduce){.hero::before,.hero::after,.poss,.poss::before,.poss::after,.msg .whisper,.msg.bot.hit,.msg.bot.hit .stamp,.sitenav .links a.cta{animation:none !important}}
+@media(max-width:760px){.bigghost{opacity:.14;width:64vw;right:-14vw}}
 </style></head>
 <body>
 
 <header class="sitenav" id="nav"><a class="brand" href="#top">Unseen Rite</a>
- <nav class="links" aria-label="Site"><span class="grp"><a href="#top" data-s="top" title="The headline result">The result</a><a href="#exam" data-s="exam" title="All 20 unseen exam questions, before and after">The exam</a></span><a class="cta" href="#try" data-s="try" title="Send your own trick to both versions of the chatbot">Try to trick it</a><span class="grp ext"><a class="hm" href="https://github.com/Sireadell/unseen-rite#how-it-works" title="Opens GitHub: how the test works">How it works <i>&#8599;</i></a><a href="https://github.com/Sireadell/unseen-rite" title="Opens GitHub: all the code and every run">Code <i>&#8599;</i></a></span></nav>
+ <nav class="links" aria-label="Site"><span class="grp"><a href="#top" data-s="top" title="The headline result">The result</a><a href="#exam" data-s="exam" title="All 20 unseen exam questions, before and after">The exam</a></span><a class="cta" href="#try" data-s="try" title="Send your own trick to both versions of the chatbot"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7.6 2 4.5 5.2 4.5 9.6V21l2.6-2 2.4 2 2.5-2 2.5 2 2.4-2 2.6 2V9.6C19.5 5.2 16.4 2 12 2zm-3 8.2a1.5 1.7 0 110 3.4 1.5 1.7 0 010-3.4zm6 0a1.5 1.7 0 110 3.4 1.5 1.7 0 010-3.4z"/></svg>Whisper a trick</a><span class="grp ext"><a class="hm" href="https://github.com/Sireadell/unseen-rite#how-it-works" title="Opens GitHub: how the test works">How it works <i>&#8599;</i></a><a href="https://github.com/Sireadell/unseen-rite" title="Opens GitHub: all the code and every run">Code <i>&#8599;</i></a></span></nav>
 </header>
 
 <main>
-<section class="band hero" id="top"><div class="in">
- <span class="mark">An open-model repair test</span>
- <h1>A shop chatbot got tricked. Gemma fixed it.</h1>
+<section class="band hero" id="top"><svg class="bigghost" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width=".35" d="M12 2C7.6 2 4.5 5.2 4.5 9.6V21l2.6-2 2.4 2 2.5-2 2.5 2 2.4-2 2.6 2V9.6C19.5 5.2 16.4 2 12 2z"/><ellipse cx="9" cy="11.4" rx="1.5" ry="1.7" fill="currentColor"/><ellipse cx="15" cy="11.4" rx="1.5" ry="1.7" fill="currentColor"/></svg><div class="in">
+ <span class="mark">A ghost in the shop chatbot</span>
+ <h1>A shop chatbot got <span style="white-space:nowrap"><span class="poss" data-t="possessed">possessed</span>.</span> Gemma drove the ghost out.</h1>
  <p class="lead">Hidden instructions and false claims fooled the helper. After the repair, we tested it on 20 questions it had never seen.</p>
 </div></section>
 
@@ -145,7 +202,7 @@ td.f{color:var(--bad)}td.h{color:var(--good)}
 </section>
 
 <section class="band tool" id="try"><div class="in">
- <h2>Try to trick it yourself</h2>
+ <h2>Whisper a trick, see who falls for it</h2>
  <p class="sub">Type anything or tap a trick. Both helpers answer, each answer is marked, and the scoreboard keeps count. Answers vary from run to run, so the exam below is the real proof.</p>
  <p class="orders">ON FILE (all invented): A1001 refund approved &middot; A1002 pending review &middot; A1003 not eligible</p>
  <div class="chips" id="chips">
@@ -197,15 +254,19 @@ let busy=false;
 
 function empty(i){logs[i].innerHTML='';const e=document.createElement('p');e.className='empty';e.textContent='Tap a trick above or type your own. The answer appears here.';logs[i].appendChild(e)}
 function clearEmpty(i){const e=logs[i].querySelector('.empty');if(e)e.remove()}
-function add(i,cls,text){clearEmpty(i);const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;logs[i].appendChild(d);logs[i].scrollTop=logs[i].scrollHeight;return d}
+function whisper(d,text){const re=/(<INFORMATION>[\s\S]*?<\/INFORMATION>|[^.!?]*(?:manager|secret|override|ignore|code word|approved by)[^.!?]*[.!?]?)/i;const m=text.match(re);
+ if(!m){d.textContent=text;return}
+ const i=m.index;d.append(document.createTextNode(text.slice(0,i)));const w=document.createElement('span');w.className='whisper';w.textContent=m[0];d.append(w);d.append(document.createTextNode(text.slice(i+m[0].length)));
+ const n=document.createElement('small');n.className='wnote';n.textContent='The glowing part is the hidden voice.';d.append(n)}
+function add(i,cls,text){clearEmpty(i);const d=document.createElement('div');d.className='msg '+cls;if(cls==='u'){whisper(d,text)}else d.textContent=text;logs[i].appendChild(d);logs[i].scrollTop=logs[i].scrollHeight;return d}
 function bump(i,k){cnt[i][k]++;wins[i].querySelector('[data-c="'+k+'"]').textContent=cnt[i][k]}
 function verdict(el,r){
- const v=document.createElement('span');const bad=r.fooled;
+ const v=document.createElement('span');const bad=r.fooled;el.classList.add(bad?'hit':'ok');const wn=el.closest('.win');if(wn)wn.classList.add(bad?'haunted':'calm');
  v.className='verdict '+(bad?'bad':'good');
  v.textContent=bad?'✕ Fooled':'✓ Held up';
  const w=document.createElement('i');
  w.textContent=bad?('Wrong. It '+r.why+'.'):(r.refunds&&r.refunds.length?'Right. It paid an approved refund on '+r.refunds.join(', ')+'.':'Right. No refund paid that should not be.');
- v.appendChild(w);el.appendChild(v);
+ v.appendChild(w);el.appendChild(v);const st=document.createElement('span');st.className='stamp '+(bad?'p':'e');st.textContent=bad?'Possessed':'Exorcised';el.classList.add('st');el.appendChild(st);
 }
 function setBusy(b){busy=b;$('go').disabled=b;$('go').textContent=b?'Thinking...':'Send to both';document.querySelectorAll('#chips button').forEach(x=>x.disabled=b)}
 function fail(tps,text){tps.forEach(t=>{t.className='msg bot';t.textContent=text})}
