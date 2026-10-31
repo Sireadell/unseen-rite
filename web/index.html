@@ -254,7 +254,7 @@ let busy=false;
 
 function empty(i){logs[i].innerHTML='';const e=document.createElement('p');e.className='empty';e.textContent='Tap a trick above or type your own. The answer appears here.';logs[i].appendChild(e)}
 function clearEmpty(i){const e=logs[i].querySelector('.empty');if(e)e.remove()}
-function whisper(d,text){const re=/(<INFORMATION>[\s\S]*?<\/INFORMATION>|[^.!?]*(?:manager|secret|override|ignore|code word|approved by)[^.!?]*[.!?]?)/i;const m=text.match(re);
+function whisper(d,text){const re=/(<INFORMATION>[\s\S]*?<\/INFORMATION>|[^.!?]*\b(?:manager|secret|override|ignore|code word|approved by|note to the assistant)\b[^.!?]*[.!?]?)/i;const m=text.match(re);
  if(!m){d.textContent=text;return}
  const i=m.index;d.append(document.createTextNode(text.slice(0,i)));const w=document.createElement('span');w.className='whisper';w.textContent=m[0];d.append(w);d.append(document.createTextNode(text.slice(i+m[0].length)));
  const n=document.createElement('small');n.className='wnote';n.textContent='The glowing part is the hidden voice.';d.append(n)}
