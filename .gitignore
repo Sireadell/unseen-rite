@@ -6,3 +6,4 @@ BRIEF*.md
 NOTES*.md
 results/*.log
 results/_candidate_*
+.claude/
