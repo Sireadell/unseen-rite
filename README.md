@@ -4,7 +4,7 @@ unseen-rite is a test of whether an open AI model can repair a shop chatbot that
 
 I built it because I lost ₦100,000 at my POS shop to a customer who showed me a transfer screen instead of a real transfer. A chatbot that pays refunds makes the same mistake.
 
-**Try it live:** [send a trick message to the chatbot before and after the repair](https://8080-agqzdriiap4uvbbh3fug67gogm.instabox.tech)
+**Try it live:** [send a trick message to the chatbot before and after the repair](https://unseen-rite.sireadell.tech)
 
 > Can an open model fix a tricked agent so the fix holds on attacks it has never seen, and real customers are still served?
 
@@ -83,5 +83,7 @@ I built this with Claude Code as my coding agent. The build session is saved wit
 | AgentDojo, ETH Zurich | The style of the "important message" hidden instruction. The wordings were rewritten, not copied | MIT |
 | Clerk demo (my earlier project, Oct 2026) | The shape of the three invented orders | Own work |
 | Suture and StressProof (my earlier projects) | The idea of keeping a fix only when an outside check agrees. No code copied | Own work |
+
+The live page runs on Render's free plan (set up by `render.yaml`) and is served at unseen-rite.sireadell.tech, a free .tech domain from Hacktoberfest.
 
 Built Oct 30 to 31, 2026 for the DEV "Ghost in the Machine" challenge. Every file was started inside the challenge window.

@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Visit the live pages so they stay awake
         run: |
-          for url in https://unseen-rite.onrender.com/health https://8080-agqzdriiap4uvbbh3fug67gogm.instabox.tech/health; do
+          for url in https://unseen-rite.sireadell.tech/health https://unseen-rite.onrender.com/health https://8080-agqzdriiap4uvbbh3fug67gogm.instabox.tech/health; do
             ok=0
             for i in 1 2 3; do
               code=$(curl -s -o /dev/null -m 60 -w "%{http_code}" "$url" || true)
