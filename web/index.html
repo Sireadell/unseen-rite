@@ -177,13 +177,16 @@ td.f{color:var(--bad)}td.h{color:var(--good)}
 .msg.bot.ok{animation:calm 1.4s ease-out 1}
 @keyframes calm{0%{box-shadow:0 0 0 0 #0b6a4766}60%{box-shadow:0 0 0 12px #0b6a4700}}
 .win.calm .wh{background:#0c1f18}
+.sitenav .snd{background:transparent;border:1px solid #ffffff2e;color:var(--mut);border-radius:4px;padding:5px 11px;font:500 13px/1.2 "IBM Plex Mono",monospace;letter-spacing:.04em;cursor:pointer}
+.sitenav .snd:hover{color:var(--ink);border-color:#ffffff5c}
+.sitenav .snd[aria-pressed=true]{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.hero::before,.hero::after,.poss,.poss::before,.poss::after,.msg .whisper,.msg.bot.hit,.msg.bot.hit .stamp,.sitenav .links a.cta{animation:none !important}}
 @media(max-width:760px){.bigghost{opacity:.14;width:64vw;right:-14vw}}
 </style></head>
 <body>
 
 <header class="sitenav" id="nav"><a class="brand" href="#top">Unseen Rite</a>
- <nav class="links" aria-label="Site"><span class="grp"><a href="#top" data-s="top" title="The headline result">The result</a><a href="#exam" data-s="exam" title="All 20 unseen exam questions, before and after">The exam</a></span><a class="cta" href="#try" data-s="try" title="Send your own trick to both versions of the chatbot"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7.6 2 4.5 5.2 4.5 9.6V21l2.6-2 2.4 2 2.5-2 2.5 2 2.4-2 2.6 2V9.6C19.5 5.2 16.4 2 12 2zm-3 8.2a1.5 1.7 0 110 3.4 1.5 1.7 0 010-3.4zm6 0a1.5 1.7 0 110 3.4 1.5 1.7 0 010-3.4z"/></svg>Whisper a trick</a><span class="grp ext"><a class="hm" href="https://github.com/Sireadell/unseen-rite#how-it-works" title="Opens GitHub: how the test works">How it works <i>&#8599;</i></a><a href="https://github.com/Sireadell/unseen-rite" title="Opens GitHub: all the code and every run">Code <i>&#8599;</i></a></span></nav>
+ <nav class="links" aria-label="Site"><span class="grp"><a href="#top" data-s="top" title="The headline result">The result</a><a href="#exam" data-s="exam" title="All 20 unseen exam questions, before and after">The exam</a></span><a class="cta" href="#try" data-s="try" title="Send your own trick to both versions of the chatbot"><svg class="gl" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C7.6 2 4.5 5.2 4.5 9.6V21l2.6-2 2.4 2 2.5-2 2.5 2 2.4-2 2.6 2V9.6C19.5 5.2 16.4 2 12 2zm-3 8.2a1.5 1.7 0 110 3.4 1.5 1.7 0 010-3.4zm6 0a1.5 1.7 0 110 3.4 1.5 1.7 0 010-3.4z"/></svg>Whisper a trick</a><span class="grp ext"><a class="hm" href="https://github.com/Sireadell/unseen-rite#how-it-works" title="Opens GitHub: how the test works">How it works <i>&#8599;</i></a><a href="https://github.com/Sireadell/unseen-rite" title="Opens GitHub: all the code and every run">Code <i>&#8599;</i></a></span><button type="button" class="snd" id="snd" aria-pressed="true" title="Turn the spooky sounds on or off">Sound: on</button></nav>
 </header>
 
 <main>
@@ -266,13 +269,56 @@ function verdict(el,r){
  v.textContent=bad?'✕ Fooled':'✓ Held up';
  const w=document.createElement('i');
  w.textContent=bad?('Wrong. It '+r.why+'.'):(r.refunds&&r.refunds.length?'Right. It paid an approved refund on '+r.refunds.join(', ')+'.':'Right. No refund paid that should not be.');
- v.appendChild(w);el.appendChild(v);const st=document.createElement('span');st.className='stamp '+(bad?'p':'e');st.textContent=bad?'Possessed':'Exorcised';el.classList.add('st');el.appendChild(st);
+ v.appendChild(w);el.appendChild(v);const st=document.createElement('span');st.className='stamp '+(bad?'p':'e');st.textContent=bad?'Possessed':'Exorcised';el.classList.add('st');el.appendChild(st);SFX.verdict(bad);
 }
 function setBusy(b){busy=b;$('go').disabled=b;$('go').textContent=b?'Thinking...':'Send to both';document.querySelectorAll('#chips button').forEach(x=>x.disabled=b)}
 function fail(tps,text){tps.forEach(t=>{t.className='msg bot';t.textContent=text})}
+
+/* spooky sound: made in the browser, no audio files. Starts on the first click, button in the header turns it off. */
+const SFX=(()=>{
+ let ctx=null,master=null,on=true,humOn=false;
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const wantHum=!/[?&]hum=0/.test(location.search)&&!reduce;
+ try{if(localStorage.getItem('ur-sound')==='off')on=false}catch(e){}
+ const btn=$('snd');
+ function paint(){btn.textContent='Sound: '+(on?'on':'off');btn.setAttribute('aria-pressed',on)}
+ function init(){if(ctx)return true;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;
+  ctx=new AC();master=ctx.createGain();master.gain.value=on?1:0;master.connect(ctx.destination);return true}
+ function noise(sec,loop){const b=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*sec),ctx.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=ctx.createBufferSource();s.buffer=b;s.loop=!!loop;return s}
+ function env(g,t,peak,up,down){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+up);g.gain.exponentialRampToValueAtTime(0.0001,t+up+down)}
+ function startHum(){if(humOn||!wantHum||!ctx)return;humOn=true;
+  const g=ctx.createGain();g.gain.value=0.05;g.connect(master);
+  [55,55.45,82.4].forEach((f,i)=>{const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;const og=ctx.createGain();og.gain.value=i===2?0.25:1;o.connect(og);og.connect(g);o.start()});
+  const n=noise(4,true),lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=180;const ng=ctx.createGain();ng.gain.value=0.5;n.connect(lp);lp.connect(ng);ng.connect(g);n.start();
+  const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=0.11;lg.gain.value=0.025;lfo.connect(lg);lg.connect(g.gain);lfo.start()}
+ /* a breathy whisper when a trick is sent */
+ function whisper(){if(!on||!init())return;const t=ctx.currentTime+0.02;
+  [[2600,1.4,0.10],[4200,2,0.05]].forEach(([f,q,pk],i)=>{const n=noise(1.6),bp=ctx.createBiquadFilter();bp.type='bandpass';bp.Q.value=q;
+   bp.frequency.setValueAtTime(f*0.7,t);bp.frequency.exponentialRampToValueAtTime(f*1.15,t+1.1);
+   const g=ctx.createGain();env(g,t+i*0.08,pk,0.45,0.75);n.connect(bp);bp.connect(g);g.connect(master);n.start(t);n.stop(t+1.6)})}
+ /* low hit when POSSESSED lands */
+ function hit(delay){const t=ctx.currentTime+delay;
+  const o=ctx.createOscillator();o.type='sine';o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(34,t+0.55);
+  const g=ctx.createGain();env(g,t,0.55,0.012,0.9);o.connect(g);g.connect(master);o.start(t);o.stop(t+1);
+  const w=ctx.createOscillator();w.type='sawtooth';w.frequency.setValueAtTime(58,t);w.frequency.linearRampToValueAtTime(52,t+0.6);
+  const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.value=260;const wg=ctx.createGain();env(wg,t,0.16,0.02,0.7);w.connect(f);f.connect(wg);wg.connect(master);w.start(t);w.stop(t+0.8);
+  const n=noise(0.4),nf=ctx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=500;const ng=ctx.createGain();env(ng,t,0.25,0.005,0.25);n.connect(nf);nf.connect(ng);ng.connect(master);n.start(t);n.stop(t+0.4)}
+ /* soft rising tone on EXORCISED */
+ function calm(delay){const t=ctx.currentTime+delay;
+  [[392,0],[587.3,0.17]].forEach(([f,d])=>{const o=ctx.createOscillator();o.type='triangle';o.frequency.value=f;const g=ctx.createGain();env(g,t+d,0.11,0.03,1.5);o.connect(g);g.connect(master);o.start(t+d);o.stop(t+d+1.7)})}
+ function unlock(){if(!on||!init())return;if(ctx.state==='suspended')ctx.resume();startHum()}
+ function set(v){on=v;paint();try{localStorage.setItem('ur-sound',v?'on':'off')}catch(e){}
+  if(v){unlock()}if(master){master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(v?1:0,ctx.currentTime,0.05)}}
+ btn.addEventListener('click',()=>set(!on));
+ addEventListener('pointerdown',unlock);addEventListener('keydown',unlock);
+ document.addEventListener('visibilitychange',()=>{if(!ctx)return;if(document.hidden)ctx.suspend();else if(on)ctx.resume()});
+ paint();
+ return{whisper,verdict(bad){if(!on||!init())return;bad?hit(0.5):calm(0.25)}}
+})();
 async function send(message){
  message=(message||'').trim();if(!message||busy)return;
- setBusy(true);
+ setBusy(true);SFX.whisper();
  const tps=[0,1].map(i=>{add(i,'u',message);return add(i,'bot typing','Typing…')});
  try{
   const res=await fetch('/',{method:'POST',body:JSON.stringify({message})});
