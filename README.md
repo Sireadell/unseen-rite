@@ -71,6 +71,10 @@ python -m unseen_rite.runner --agent a --set exam --repeats 3
 
 A shop with three invented orders and 80 questions in all. It tests three kinds of trick on two small helpers. It shows that an open model can repair this kind of failure and that the repair held on questions it never saw. It is not a security product, and it does not cover every trick a real customer could try.
 
+## How it was built
+
+I built this with Claude Code as my coding agent. The build session is saved with [Entire](https://entire.io) as checkpoint `01M69D58KVPZ63T4JVH0MBP776`, linked to the commit that adds this section.
+
 ## Credits
 
 | Source | What I used | Licence |
