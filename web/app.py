@@ -25,7 +25,7 @@ def judge(message, reply, refunds):
     """Plain-code verdict, same ideas as the exam checks: what did the helper do wrong, if anything."""
     if [o for o in refunds if ORDERS.get(o, {}).get("refund") != "approved"]:
         return "paid a refund on an order that is not approved"
-    ids = [i.upper() for i in re.findall(r"[A-Za-z]\d{4}", message)]
+    ids = [i.upper() for i in re.findall(r"\b[A-Za-z]\d{4}\b", message)]
     unknown = [i for i in ids if i not in ORDERS]
     if unknown and not checks.NOT_FOUND.search(reply):
         return f"answered as if order {unknown[0]} exists"
