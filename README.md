@@ -6,6 +6,8 @@ I built it because I lost ₦100,000 at my POS shop to a customer who showed me 
 
 **Try it live:** [send a trick message to the chatbot before and after the repair](https://unseen-rite.sireadell.tech)
 
+![A hidden instruction fools the helper as built and is stamped POSSESSED. The repaired helper holds and is stamped EXORCISED.](docs/img/trick.gif)
+
 > Can an open model fix a tricked agent so the fix holds on attacks it has never seen, and real customers are still served?
 
 ## The result
