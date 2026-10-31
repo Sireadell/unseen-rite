@@ -23,6 +23,15 @@ button,input,textarea{font-family:inherit}
 .sitenav .links{display:flex;gap:clamp(14px,2.5vw,32px);flex-wrap:wrap}
 .sitenav .links a{color:var(--mut);text-decoration:none;font-size:15px}
 .sitenav .links a:hover{color:var(--ink);text-decoration:underline}
+.sitenav .links{align-items:center}
+.sitenav .grp{display:flex;gap:clamp(12px,2vw,24px);align-items:center}
+.sitenav .grp.ext{padding-left:clamp(12px,2vw,24px);border-left:1px solid #ffffff2e}
+.sitenav .links a i{font-style:normal;font-size:.85em;opacity:.8}
+.sitenav .links a[data-s].on{color:var(--ink);box-shadow:0 2px 0 var(--acc)}
+.sitenav .links a.cta{background:var(--acc);color:#0b1417;font-weight:700;padding:8px 16px;border-radius:999px;box-shadow:none}
+.sitenav .links a.cta:hover{text-decoration:none;filter:brightness(1.08)}
+.sitenav .links a.cta.on{box-shadow:0 0 0 3px #8fc1ff55}
+@media(max-width:760px){.sitenav .links{gap:10px 14px;width:100%}.sitenav .links a{font-size:14px}.sitenav .grp.ext{border-left:0;padding-left:0}.sitenav .links a.hm{display:none}.sitenav .links a.cta{padding:6px 12px}}
 @media(prefers-reduced-motion:no-preference){.sitenav{transition:transform .2s}}
 @media(max-width:760px){.sitenav.hide{transform:translateY(-100%)}}
 
@@ -117,7 +126,7 @@ td.f{color:var(--bad)}td.h{color:var(--good)}
 <body>
 
 <header class="sitenav" id="nav"><a class="brand" href="#top">Unseen Rite</a>
- <nav class="links" aria-label="Site"><a href="#try">Try it</a><a href="#exam">The exam</a><a href="#about">About</a><a href="https://github.com/Sireadell/unseen-rite#how-it-works">Method</a><a href="https://github.com/Sireadell/unseen-rite">GitHub</a></nav>
+ <nav class="links" aria-label="Site"><span class="grp"><a href="#top" data-s="top" title="The headline result">The result</a><a href="#exam" data-s="exam" title="All 20 unseen exam questions, before and after">The exam</a></span><a class="cta" href="#try" data-s="try" title="Send your own trick to both versions of the chatbot">Try to trick it</a><span class="grp ext"><a class="hm" href="https://github.com/Sireadell/unseen-rite#how-it-works" title="Opens GitHub: how the test works">How it works <i>&#8599;</i></a><a href="https://github.com/Sireadell/unseen-rite" title="Opens GitHub: all the code and every run">Code <i>&#8599;</i></a></span></nav>
 </header>
 
 <main>
@@ -259,5 +268,9 @@ loadTable().catch(()=>{$('sum').textContent='The exam table could not be loaded.
  addEventListener('scroll',()=>{const y=window.scrollY;
   if(matchMedia('(max-width:760px)').matches){nav.classList.toggle('hide',y>last&&y>120)}else nav.classList.remove('hide');
   last=y},{passive:true})})();
+/* highlight the nav link for the section being read */
+(function(){const links={};document.querySelectorAll('.sitenav a[data-s]').forEach(a=>links[a.dataset.s]=a);
+ const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){Object.values(links).forEach(a=>a.classList.remove('on'));const a=links[e.target.id];if(a)a.classList.add('on')}})},{rootMargin:'-40% 0px -55% 0px'});
+ ['top','try','exam'].forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el)})})();
 </script>
 </body></html>
