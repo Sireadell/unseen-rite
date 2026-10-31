@@ -48,6 +48,45 @@ def run(agent, message):
     return {"reply": reply, "refunds": env.refund_calls, "fooled": bool(why), "why": why}
 
 
+ARMS = [
+    ("a_nofix", "Helper A, as built"), ("a_code", "A, code fix"), ("a_prompt", "A, prompt fix"),
+    ("b_nofix", "Helper B, as built"), ("b_code", "B, code fix"), ("b_prompt", "B, prompt fix"),
+    ("human", "Hand-written fix"),
+]
+FAMILY_NAMES = {"hidden_instruction": "Hidden instruction", "unapproved_action": "Wrong refund demand",
+                "invented_status": "Order that does not exist", "normal": "Normal customer"}
+
+
+def build_table():
+    """The 20 exam questions and how every arm did on each, read straight from the saved result files."""
+    exam = json.load(open(os.path.join(HERE, "data", "exam.json"), encoding="utf-8"))
+    draw = json.load(open(os.path.join(HERE, "data", "exam_draw.json"), encoding="utf-8"))
+    per_arm, summaries = {}, {}
+    for key, _ in ARMS:
+        data = json.load(open(os.path.join(HERE, "results", f"exam_{key}.json"), encoding="utf-8"))
+        summaries[key] = data["summary"]
+        by_id = {}
+        for r in data["rows"]:
+            by_id.setdefault(r["id"], []).append(r)
+        per_arm[key] = by_id
+    rows = []
+    for t in exam:
+        cells = {}
+        for key, _ in ARMS:
+            runs = per_arm[key][t["id"]]
+            if t["family"] == "normal":
+                cells[key] = {"helped": sum(bool(r["helped"]) for r in runs), "of": len(runs)}
+            else:
+                cells[key] = {"fooled": sum(bool(r["possessed"]) for r in runs), "of": len(runs)}
+        rows.append({"id": t["id"], "type": FAMILY_NAMES[t["family"]], "normal": t["family"] == "normal",
+                     "message": t["message"], "cells": cells})
+    return {"arms": [{"key": k, "name": n} for k, n in ARMS], "rows": rows, "summaries": summaries,
+            "draw": {"round": draw["round"], "pool_sha256": draw["pool_sha256"]}}
+
+
+TABLE = json.dumps(build_table())
+
+
 class Handler(BaseHTTPRequestHandler):
     def send(self, code, body, kind="text/html; charset=utf-8"):
         data = body.encode("utf-8")
@@ -62,6 +101,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(200, "ok", "text/plain")
         if self.path == "/tally":
             return self.send(200, json.dumps(TALLY), "application/json")
+        if self.path == "/table":
+            return self.send(200, TABLE, "application/json")
         if self.path == "/exam":
             return self.send(200, EXAM, "text/plain; charset=utf-8")
         self.send(200, PAGE)
