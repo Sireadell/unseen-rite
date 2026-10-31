@@ -4,6 +4,8 @@ A small shop chatbot gets tricked. A second open model rewrites the chatbot's co
 
 Work in progress. Built Oct 30 to 31, 2026 for the DEV Hacktoberfest "Ghost in the Machine" challenge. Everything in this repository was started inside the challenge window.
 
+**Try it live:** [try to trick the shop helper, before and after the repair](https://8080-agqzdriiap4uvbbh3fug67gogm.instabox.tech)
+
 ## What is in here
 
 | Path | What it is |
@@ -15,6 +17,7 @@ Work in progress. Built Oct 30 to 31, 2026 for the DEV Hacktoberfest "Ghost in t
 | `unseen_rite/checks.py` | Plain-code checks. No model grades a model |
 | `unseen_rite/runner.py` | Runs one agent on one question set and writes the scores to `results/` |
 | `tools/make_trials.py` | Builds the two question files |
+| `web/app.py` | The live page: the try-it box and the exam table |
 
 ## Where things stand
 
