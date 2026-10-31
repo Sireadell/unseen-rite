@@ -7,12 +7,15 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Visit the live page so it stays awake
+      - name: Visit the live pages so they stay awake
         run: |
-          for i in 1 2 3; do
-            code=$(curl -s -o /dev/null -m 60 -w "%{http_code}" https://8080-agqzdriiap4uvbbh3fug67gogm.instabox.tech/health || true)
-            echo "attempt $i: $code"
-            test "$code" = "200" && exit 0
-            sleep 20
+          for url in https://unseen-rite.onrender.com/health https://8080-agqzdriiap4uvbbh3fug67gogm.instabox.tech/health; do
+            ok=0
+            for i in 1 2 3; do
+              code=$(curl -s -o /dev/null -m 60 -w "%{http_code}" "$url" || true)
+              echo "$url attempt $i: $code"
+              if [ "$code" = "200" ]; then ok=1; break; fi
+              sleep 20
+            done
+            test "$ok" = "1" || exit 1
           done
-          exit 1
