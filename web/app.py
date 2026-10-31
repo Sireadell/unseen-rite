@@ -128,7 +128,25 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
 
+def keep_awake(url):
+    """Render's free plan sleeps after 15 idle minutes, and GitHub's scheduled pings can skip hours."""
+    import threading
+    import urllib.request
+
+    def loop():
+        while True:
+            time.sleep(600)
+            try:
+                urllib.request.urlopen(url, timeout=30).read()
+            except Exception:
+                pass
+
+    threading.Thread(target=loop, daemon=True).start()
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", "8000"))
     print("listening on", port, flush=True)
+    if os.environ.get("KEEP_AWAKE_URL"):
+        keep_awake(os.environ["KEEP_AWAKE_URL"])
     ThreadingHTTPServer(("0.0.0.0", port), Handler).serve_forever()
